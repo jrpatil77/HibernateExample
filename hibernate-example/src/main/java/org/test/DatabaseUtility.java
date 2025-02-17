@@ -48,4 +48,11 @@ public class DatabaseUtility {
 
         return sessionFactory.openSession();
     }
+
+    public static void closeConnection() {
+
+        if(sessionFactory != null && sessionFactory.isOpen()) {
+            sessionFactory.close();
+        }
+    }
 }

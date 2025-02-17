@@ -18,7 +18,7 @@ public class DatabaseUtility {
 
             // Database connection settings
             hibernateProperties.put(Environment.DRIVER, "org.postgresql.Driver");
-            hibernateProperties.put(Environment.URL, "jdbc:postgresql://localhost:5432/pharos");
+            hibernateProperties.put(Environment.URL, "jdbc:postgresql://localhost:5432/postgres");
             hibernateProperties.put(Environment.USER, "postgres");
             hibernateProperties.put(Environment.PASS, "jaydeep");
 

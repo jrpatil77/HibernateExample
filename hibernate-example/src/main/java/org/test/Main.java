@@ -11,55 +11,17 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        Properties hibernateProperties = new Properties();
 
-        // Database connection settings
-        hibernateProperties.put(Environment.DRIVER, "org.postgresql.Driver");
-        hibernateProperties.put(Environment.URL, "jdbc:postgresql://localhost:5432/pharos");
-        hibernateProperties.put(Environment.USER, "postgres");
-        hibernateProperties.put(Environment.PASS, "jaydeep");
+        DatabaseUtility.setDbConnectionConfig("jdbc:postgresql://localhost:5432/pharos",
+                "postgres",
+                "jaydeep");
 
-        // Hibernate properties
-        hibernateProperties.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
-        hibernateProperties.put(Environment.SHOW_SQL, "true");
-        hibernateProperties.put(Environment.FORMAT_SQL, "true");
-        hibernateProperties.put(Environment.HBM2DDL_AUTO, "none");
+        List<Student> allStudents = StudentRepository.getAllStudents();
 
-        // Create configuration
-        Configuration configuration = new Configuration();
-        configuration.setProperties(hibernateProperties);
-        configuration.addAnnotatedClass(Student.class);
+        allStudents.forEach(s -> {
+            System.out.println(s.getName());
+        });
 
-        // Create session factory
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
-            // Create session
-            try (Session session = sessionFactory.openSession()) {
-                // Method 1: Get all students
-                List<Student> students = session.createQuery("from Student", Student.class).list();
-                System.out.println("All Students:");
-                for (Student student : students) {
-                    System.out.println(student);
-                }
-
-                // Method 2: Get student by ID
-                Student student = session.get(Student.class, 1);
-                if (student != null) {
-                    System.out.println("Student with ID 1: " + student);
-                }
-
-                // Method 3: Query with conditions
-                List<Student> filteredStudents = session.createQuery(
-                                "from Student where name = :fname", Student.class)
-                        .setParameter("fname", "John")
-                        .list();
-                System.out.println("Students named John:");
-                for (Student s : filteredStudents) {
-                    System.out.println(s);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
 
